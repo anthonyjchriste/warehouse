@@ -35,15 +35,15 @@ public class ModelTest {
   public void testModel() {
     // Create 1 tag that's associated with 1 StockItem for 1 Product
     Tag tag = new Tag("Tag");
-    Product product = new Product("Product", "Description");
+    Product product = new Product("productId", "Product", "Description");
     product.tags.add(tag);
     tag.products.add(product);
 
     // Create 1 address that's associated with 1 Warehouse
-    Address address = new Address("Address");
-    Warehouse warehouse = new Warehouse("Warehouse", address);
+    Address address = new Address("addressId", "Address");
+    Warehouse warehouse = new Warehouse("warehouseId", "Warehouse", address);
     address.warehouse = warehouse;
-    StockItem stockItem = new StockItem(warehouse, product, 100);
+    StockItem stockItem = new StockItem("stockItemId", warehouse, product, 100);
     warehouse.stockItems.add(stockItem);
 
     warehouse.save();
