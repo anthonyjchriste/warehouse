@@ -22,7 +22,6 @@ public class Address extends Model {
   @Required
   String addressId;
   
-  @Required
   @OneToOne(mappedBy = "address", cascade = CascadeType.ALL)
   public Warehouse warehouse;
   

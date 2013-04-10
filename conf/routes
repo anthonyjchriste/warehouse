@@ -11,12 +11,6 @@ GET     /warehouses/:warehouseId    controllers.Warehouse.details(warehouseId: S
 POST    /warehouses                 controllers.Warehouse.newWarehouse()
 DELETE  /warehouses/:warehouseId    controllers.Warehouse.delete(warehouseId: String)
 
-# Addresses
-GET     /addresses                  controllers.Address.index()
-GET     /addresses/:addressId       controllers.Address.details(addressId: String)
-POST    /addresses                  controllers.Address.newAddress()
-DELETE  /addresses/:addressId       controllers.Address.delete(addressId: String) 
-
 # StockItems
 GET     /stockitems                 controllers.StockItem.index()
 GET     /stockitems/:stockItemId    controllers.StockItem.details(stockItemId: String)

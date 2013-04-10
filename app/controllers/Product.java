@@ -30,6 +30,12 @@ public class Product extends Controller {
   }
   
   public static Result delete(String productId) {
-    return TODO;
+    models.Product product = models.Product.find().where().eq("productId", productId).findUnique();
+    
+    if(product != null) {
+      product.delete();
+    }
+    
+    return ok();
   }
 }
