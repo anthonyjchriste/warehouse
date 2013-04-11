@@ -1,7 +1,7 @@
 warehouse
 =========
 
-Warehouse is a web application written using the Play framework that manages the inventory of the warehouse.
+Warehouse is a web application written using the [Play Framework](http://www.playframework.com/) that manages the inventory of the warehouse.
 
 ## Capabilities
 Warehouse was built to model the relationships between warehouses, stock items, products, and tags.
