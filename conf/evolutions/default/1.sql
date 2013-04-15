@@ -4,44 +4,49 @@
 # --- !Ups
 
 create table address (
-  id                        bigint not null,
+  primary_key               bigint not null,
+  address_id                varchar(255),
   address                   varchar(255),
-  constraint pk_address primary key (id))
+  constraint pk_address primary key (primary_key))
 ;
 
 create table product (
-  id                        bigint not null,
+  primary_key               bigint not null,
+  product_id                varchar(255),
   name                      varchar(255),
   description               varchar(255),
-  constraint pk_product primary key (id))
+  constraint pk_product primary key (primary_key))
 ;
 
 create table stock_item (
-  id                        bigint not null,
-  warehouse_id              bigint,
-  product_id                bigint,
+  primary_key               bigint not null,
+  stock_item_id             varchar(255),
+  warehouse_primary_key     bigint,
+  product_primary_key       bigint,
   quantity                  bigint,
-  constraint pk_stock_item primary key (id))
+  constraint pk_stock_item primary key (primary_key))
 ;
 
 create table tag (
-  id                        bigint not null,
+  primary_key               bigint not null,
   name                      varchar(255),
-  constraint pk_tag primary key (id))
+  tag_id                    varchar(255),
+  constraint pk_tag primary key (primary_key))
 ;
 
 create table warehouse (
-  id                        bigint not null,
+  primary_key               bigint not null,
+  warehouse_id              varchar(255),
   name                      varchar(255),
-  address_id                bigint,
-  constraint pk_warehouse primary key (id))
+  address_primary_key       bigint,
+  constraint pk_warehouse primary key (primary_key))
 ;
 
 
 create table product_tag (
-  product_id                     bigint not null,
-  tag_id                         bigint not null,
-  constraint pk_product_tag primary key (product_id, tag_id))
+  product_primary_key            bigint not null,
+  tag_primary_key                bigint not null,
+  constraint pk_product_tag primary key (product_primary_key, tag_primary_key))
 ;
 create sequence address_seq;
 
@@ -53,18 +58,18 @@ create sequence tag_seq;
 
 create sequence warehouse_seq;
 
-alter table stock_item add constraint fk_stock_item_warehouse_1 foreign key (warehouse_id) references warehouse (id) on delete restrict on update restrict;
-create index ix_stock_item_warehouse_1 on stock_item (warehouse_id);
-alter table stock_item add constraint fk_stock_item_product_2 foreign key (product_id) references product (id) on delete restrict on update restrict;
-create index ix_stock_item_product_2 on stock_item (product_id);
-alter table warehouse add constraint fk_warehouse_address_3 foreign key (address_id) references address (id) on delete restrict on update restrict;
-create index ix_warehouse_address_3 on warehouse (address_id);
+alter table stock_item add constraint fk_stock_item_warehouse_1 foreign key (warehouse_primary_key) references warehouse (primary_key) on delete restrict on update restrict;
+create index ix_stock_item_warehouse_1 on stock_item (warehouse_primary_key);
+alter table stock_item add constraint fk_stock_item_product_2 foreign key (product_primary_key) references product (primary_key) on delete restrict on update restrict;
+create index ix_stock_item_product_2 on stock_item (product_primary_key);
+alter table warehouse add constraint fk_warehouse_address_3 foreign key (address_primary_key) references address (primary_key) on delete restrict on update restrict;
+create index ix_warehouse_address_3 on warehouse (address_primary_key);
 
 
 
-alter table product_tag add constraint fk_product_tag_product_01 foreign key (product_id) references product (id) on delete restrict on update restrict;
+alter table product_tag add constraint fk_product_tag_product_01 foreign key (product_primary_key) references product (primary_key) on delete restrict on update restrict;
 
-alter table product_tag add constraint fk_product_tag_tag_02 foreign key (tag_id) references tag (id) on delete restrict on update restrict;
+alter table product_tag add constraint fk_product_tag_tag_02 foreign key (tag_primary_key) references tag (primary_key) on delete restrict on update restrict;
 
 # --- !Downs
 
