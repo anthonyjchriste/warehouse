@@ -6,6 +6,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import play.data.validation.Constraints.Required;
 import play.db.ebean.Model;
 
 /**
@@ -20,8 +21,11 @@ public class Tag extends Model {
   @Id
   private Long primaryKey;
   
-  private String tagId;
   private String name;
+  
+  @Required
+  public String tagId;
+  
   @ManyToMany(mappedBy = "tags", cascade = CascadeType.ALL)
   private List<Product> products = new ArrayList<>();
 
