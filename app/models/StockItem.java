@@ -17,21 +17,21 @@ public class StockItem extends Model {
   private static final long serialVersionUID = -7681398919929300442L;
 
   @Id
-  public Long primaryKey;
+  private Long primaryKey;
   
   @Required
-  public String stockItemId;
-  
-  @Required
-  @ManyToOne(cascade = CascadeType.ALL)
-  public Warehouse warehouse;
+  private String stockItemId;
   
   @Required
   @ManyToOne(cascade = CascadeType.ALL)
-  public Product product;
+  private Warehouse warehouse;
   
   @Required
-  public long quantity;
+  @ManyToOne(cascade = CascadeType.ALL)
+  private Product product;
+  
+  @Required
+  private long quantity;
 
   public StockItem(String stockItemId, Warehouse warehouse, Product product, long quantity) {
     this.stockItemId = stockItemId;
@@ -48,4 +48,46 @@ public class StockItem extends Model {
   public String toString() {
     return String.format("[StockItem %s %d]", this.stockItemId, this.quantity);
   }
+
+  public Long getPrimaryKey() {
+    return primaryKey;
+  }
+
+  public void setPrimaryKey(Long primaryKey) {
+    this.primaryKey = primaryKey;
+  }
+
+  public String getStockItemId() {
+    return stockItemId;
+  }
+
+  public void setStockItemId(String stockItemId) {
+    this.stockItemId = stockItemId;
+  }
+
+  public Warehouse getWarehouse() {
+    return warehouse;
+  }
+
+  public void setWarehouse(Warehouse warehouse) {
+    this.warehouse = warehouse;
+  }
+
+  public Product getProduct() {
+    return product;
+  }
+
+  public void setProduct(Product product) {
+    this.product = product;
+  }
+
+  public long getQuantity() {
+    return quantity;
+  }
+
+  public void setQuantity(long quantity) {
+    this.quantity = quantity;
+  }
+  
+  
 }

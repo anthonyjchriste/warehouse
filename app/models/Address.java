@@ -17,16 +17,16 @@ public class Address extends Model {
   private static final long serialVersionUID = 5297816712253544981L;
 
   @Id
-  public Long primaryKey;
+  private Long primaryKey;
   
   @Required
-  String addressId;
+  private String addressId;
   
   @OneToOne(mappedBy = "address", cascade = CascadeType.ALL)
-  public Warehouse warehouse;
+  private Warehouse warehouse;
   
   @Required
-  public String address;
+  private String address;
 
   public Address(String addressId, String address) {
     this.addressId = addressId;
@@ -41,5 +41,39 @@ public class Address extends Model {
   public String toString() {
     return String.format("[Address %s %s]", this.addressId, this.address);
   }
+
+  public Long getPrimaryKey() {
+    return primaryKey;
+  }
+
+  public void setPrimaryKey(Long primaryKey) {
+    this.primaryKey = primaryKey;
+  }
+
+  public String getAddressId() {
+    return addressId;
+  }
+
+  public void setAddressId(String addressId) {
+    this.addressId = addressId;
+  }
+
+  public Warehouse getWarehouse() {
+    return warehouse;
+  }
+
+  public void setWarehouse(Warehouse warehouse) {
+    this.warehouse = warehouse;
+  }
+
+  public String getAddress() {
+    return address;
+  }
+
+  public void setAddress(String address) {
+    this.address = address;
+  }
+  
+  
 
 }

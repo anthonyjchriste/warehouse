@@ -20,21 +20,21 @@ public class Product extends Model {
   private static final long serialVersionUID = -1715163072748363949L;
 
   @Id
-  public Long primaryKey;
+  private Long primaryKey;
   
   @Required
-  public String productId;
+  private String productId;
   
   @Required
-  public String name;
+  private String name;
   
-  public String description;
+  private String description;
   
   @ManyToMany(cascade = CascadeType.ALL)
-  public List<Tag> tags = new ArrayList<>();
+  private List<Tag> tags = new ArrayList<>();
   
   @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-  public List<StockItem> stockItems = new ArrayList<>();
+  private List<StockItem> stockItems = new ArrayList<>();
 
   public Product(String productId, String name, String description) {
     this.productId = productId;
@@ -50,4 +50,54 @@ public class Product extends Model {
   public String toString() {
     return String.format("[Product %s %s %s]", this.productId, this.name, this.description);
   }
+
+  public Long getPrimaryKey() {
+    return primaryKey;
+  }
+
+  public void setPrimaryKey(Long primaryKey) {
+    this.primaryKey = primaryKey;
+  }
+
+  public String getProductId() {
+    return productId;
+  }
+
+  public void setProductId(String productId) {
+    this.productId = productId;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public List<Tag> getTags() {
+    return tags;
+  }
+
+  public void setTags(List<Tag> tags) {
+    this.tags = tags;
+  }
+
+  public List<StockItem> getStockItems() {
+    return stockItems;
+  }
+
+  public void setStockItems(List<StockItem> stockItems) {
+    this.stockItems = stockItems;
+  }
+  
+  
 }

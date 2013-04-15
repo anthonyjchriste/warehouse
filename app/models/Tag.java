@@ -18,12 +18,12 @@ public class Tag extends Model {
   private static final long serialVersionUID = -8417172117934560476L;
 
   @Id
-  public Long primaryKey;
+  private Long primaryKey;
   
-  public String tagId;
-  public String name;
+  private String tagId;
+  private String name;
   @ManyToMany(mappedBy = "tags", cascade = CascadeType.ALL)
-  public List<Product> products = new ArrayList<>();
+  private List<Product> products = new ArrayList<>();
 
   public Tag(String tagId) {
     this.tagId = tagId;
@@ -41,4 +41,38 @@ public class Tag extends Model {
   public String toString() {
     return String.format("[Tag %s]", this.tagId);
   }
+
+  public Long getPrimaryKey() {
+    return primaryKey;
+  }
+
+  public void setPrimaryKey(Long primaryKey) {
+    this.primaryKey = primaryKey;
+  }
+
+  public String getTagId() {
+    return tagId;
+  }
+
+  public void setTagId(String tagId) {
+    this.tagId = tagId;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public List<Product> getProducts() {
+    return products;
+  }
+
+  public void setProducts(List<Product> products) {
+    this.products = products;
+  }
+  
+  
 }

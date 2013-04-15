@@ -20,20 +20,20 @@ public class Warehouse extends Model {
   private static final long serialVersionUID = 4112985926784791592L;
 
   @Id
-  public Long primaryKey;
+  private Long primaryKey;
   
   @Required
-  public String warehouseId;
+  private String warehouseId;
   
   @Required
-  public String name;
+  private String name;
   
   @Required
   @OneToOne(cascade = CascadeType.ALL)
-  public Address address;
+  private Address address;
   
   @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL)
-  public List<StockItem> stockItems = new ArrayList<>();
+  private List<StockItem> stockItems = new ArrayList<>();
 
   public Warehouse(String warehouseId, String name, Address address) {
     this.warehouseId = warehouseId;
@@ -49,4 +49,46 @@ public class Warehouse extends Model {
   public String toString() {
     return String.format("[Warehouse %s %s]", this.warehouseId, this.name);
   }
+
+  public Long getPrimaryKey() {
+    return primaryKey;
+  }
+
+  public void setPrimaryKey(Long primaryKey) {
+    this.primaryKey = primaryKey;
+  }
+
+  public String getWarehouseId() {
+    return warehouseId;
+  }
+
+  public void setWarehouseId(String warehouseId) {
+    this.warehouseId = warehouseId;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public Address getAddress() {
+    return address;
+  }
+
+  public void setAddress(Address address) {
+    this.address = address;
+  }
+
+  public List<StockItem> getStockItems() {
+    return stockItems;
+  }
+
+  public void setStockItems(List<StockItem> stockItems) {
+    this.stockItems = stockItems;
+  }
+  
+  
 }
