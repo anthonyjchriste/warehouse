@@ -9,12 +9,12 @@ import static play.data.Form.form;
 public class Tag extends Controller {
   public static Result index() {
     List<models.Tag> tags = models.Tag.find().findList();
-    return ok(tags.isEmpty() ? "No tags" : tags.toString());
+    return ok(tags.isEmpty() ? "No Tags" : tags.toString());
   }
   
   public static Result details(String tagId) {
     models.Tag tag = models.Tag.find().where().eq("tagId", tagId).findUnique();
-    return (tag == null) ? notFound("No tag found") : ok(tag.toString());
+    return (tag == null) ? notFound("No Tag found") : ok(tag.toString());
   }
   
   public static Result newTag() {

@@ -88,4 +88,54 @@ public class ControllerTest {
     result = callAction(controllers.routes.ref.Product.delete(productId));
     assertEquals("Delete missing product also OK", OK, status(result));
   }
+  
+  @Test
+  public void testTagController() {
+    // Test GET /tags on an empty database.
+    Result result = callAction(controllers.routes.ref.Tag.index());
+    assertTrue("Empty tags", contentAsString(result).contains("No Tags"));
+    
+    // Test GET /tag on a database containing a single Tag.
+    String tagId = "Tag-01";
+    Tag tag = new Tag(tagId);
+    tag.save();
+    result = callAction(controllers.routes.ref.Tag.index());
+    assertTrue("One tag", contentAsString(result).contains(tagId));
+    
+    // Test GET /tags/Tag-01
+    result = callAction(controllers.routes.ref.Tag.details(tagId));
+    assertTrue("Tag detail", contentAsString(result).contains(tagId));
+    
+    // Test GET /tags/BadTagId and make sure we get a 404.
+    result = callAction(controllers.routes.ref.Tag.details("BadTagId"));
+    assertEquals("Tag detaul (bad)", NOT_FOUND, status(result));
+    
+    // Test POST /tags (with simulated, valid form data).
+    Map<String, String> tagData = new HashMap<>();
+    tagData.put("tagId", "Tag-02");
+    FakeRequest request = fakeRequest();
+    request.withFormUrlEncodedBody(tagData);
+    result = callAction(controllers.routes.ref.Tag.newTag(), request);
+    assertEquals("Create new tag", OK, status(result));
+    
+    // Test POST /tags (with invalid tag: tags cannot be named "Tag").
+    // Illustrates use of the validate() method in models.Tag.
+    request = fakeRequest();
+    tagData.put("tagId", "Tag");
+    request.withFormUrlEncodedBody(tagData);
+    result = callAction(controllers.routes.ref.Tag.newTag(), request);
+    assertEquals("Create bag tag fails", BAD_REQUEST, status(result));
+    
+    // Test DELETE /tags/Tag-01 (a valid TagID).
+    result = callAction(controllers.routes.ref.Tag.delete(tagId));
+    assertEquals("Delete current tag OK", OK, status(result));
+    result = callAction(controllers.routes.ref.Tag.details(tagId));
+    assertEquals("Deekted tag gone", NOT_FOUND, status(result));
+    result = callAction(controllers.routes.ref.Tag.delete(tagId));
+    assertEquals("Delete missing tag also OK", OK, status(result));
+    
+    
+    
+    
+  }
 }
