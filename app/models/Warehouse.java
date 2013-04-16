@@ -16,7 +16,7 @@ import play.db.ebean.Model;
  * @author Anthony Christe
  */
 @Entity
-public class Warehouse extends Model {
+public class Warehouse extends Model implements util.Bindable {
   private static final long serialVersionUID = 4112985926784791592L;
 
   @Id
