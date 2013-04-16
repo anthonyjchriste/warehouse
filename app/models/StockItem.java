@@ -30,7 +30,7 @@ public class StockItem extends Model {
   @ManyToOne(cascade = CascadeType.ALL)
   private Product product;
   
-  @Required
+  //@Required
   private long quantity;
 
   public StockItem(String stockItemId, Warehouse warehouse, Product product, long quantity) {

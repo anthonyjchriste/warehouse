@@ -26,6 +26,7 @@ import models.Warehouse;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import play.mvc.HandlerRef;
 import play.mvc.Result;
 import play.test.FakeApplication;
 import play.test.FakeRequest;
@@ -108,7 +109,7 @@ public class ControllerTest {
     
     // Test GET /tags/BadTagId and make sure we get a 404.
     result = callAction(controllers.routes.ref.Tag.details("BadTagId"));
-    assertEquals("Tag detaul (bad)", NOT_FOUND, status(result));
+    assertEquals("Tag detail (bad)", NOT_FOUND, status(result));
     
     // Test POST /tags (with simulated, valid form data).
     Map<String, String> tagData = new HashMap<>();
@@ -130,12 +131,69 @@ public class ControllerTest {
     result = callAction(controllers.routes.ref.Tag.delete(tagId));
     assertEquals("Delete current tag OK", OK, status(result));
     result = callAction(controllers.routes.ref.Tag.details(tagId));
-    assertEquals("Deekted tag gone", NOT_FOUND, status(result));
+    assertEquals("Deleted tag gone", NOT_FOUND, status(result));
     result = callAction(controllers.routes.ref.Tag.delete(tagId));
     assertEquals("Delete missing tag also OK", OK, status(result));
     
+  }
+  
+  @Test
+  public void testStockItemController() {
+    // Test GET /tags on an empty database.
+    Result result = callAction(controllers.routes.ref.StockItem.index());
+    assertTrue("Empty", contentAsString(result).contains("No stockItems"));
     
+    // Need some extra objects in order to create our StockItem.
+    Warehouse warehouse = new Warehouse("Warehouse-01", "name", new Address("Address-01", "address"));
+    Product product = new Product("Product-01", "produce", "description");
+    warehouse.save();
+    product.save();
     
+    // Test GET /stockitem on a database containing a single StockItem.
+    String stockItemId = "StockItem-01";
+    StockItem stockItem = new StockItem(stockItemId, warehouse, product, 1L);
+    stockItem.save();
+    result = callAction(controllers.routes.ref.StockItem.index());
+    assertTrue("One StockItem", contentAsString(result).contains(stockItemId));
+    
+    // Test GET /stockitems/StockItem-01
+    result = callAction(controllers.routes.ref.StockItem.details(stockItemId));
+    assertTrue("StockItem detail", contentAsString(result).contains(stockItemId));
+    
+    // Test GET /stockitems/BadStockItemId and make sure we get a 404.
+    result = callAction(controllers.routes.ref.StockItem.details("BadStockItemId"));
+    assertEquals("StockItem detail (bad)", NOT_FOUND, status(result));
+    
+    // Test POST /stockitems (with simulated, valid form data).
+    Map<String, String> stockItemData = new HashMap<>();
+    stockItemData.put("stockItemId", "StockItem-02");
+    stockItemData.put("warehouse", "Warehouse-01");
+    stockItemData.put("product", "Product-01");
+    //stockItemData.put("amount", "1");
+    FakeRequest request = fakeRequest();
+    request.withFormUrlEncodedBody(stockItemData);
+    //System.out.println(request.);
+    result = callAction(controllers.routes.ref.StockItem.newStockItem(), request);
+    assertEquals("Create new tag", OK, status(result));
+    
+    /*
+    // Test POST /tags (with invalid tag: tags cannot be named "Tag").
+    // Illustrates use of the validate() method in models.Tag.
+    request = fakeRequest();
+    tagData.put("tagId", "Tag");
+    request.withFormUrlEncodedBody(tagData);
+    result = callAction(controllers.routes.ref.Tag.newTag(), request);
+    assertEquals("Create bag tag fails", BAD_REQUEST, status(result));
+    
+    // Test DELETE /tags/Tag-01 (a valid TagID).
+    result = callAction(controllers.routes.ref.Tag.delete(tagId));
+    assertEquals("Delete current tag OK", OK, status(result));
+    result = callAction(controllers.routes.ref.Tag.details(tagId));
+    assertEquals("Deleted tag gone", NOT_FOUND, status(result));
+    result = callAction(controllers.routes.ref.Tag.delete(tagId));
+    assertEquals("Delete missing tag also OK", OK, status(result));
+    */
     
   }
+  
 }

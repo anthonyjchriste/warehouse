@@ -7,6 +7,7 @@ import play.mvc.Result;
 import static play.data.Form.form;
 
 public class Address extends Controller {
+  
   public static Result index() {
     List<models.Address> addresss = models.Address.find().findList();
     return ok(addresss.isEmpty() ? "No addresss" : addresss.toString());
