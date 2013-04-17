@@ -39,6 +39,7 @@ create table warehouse (
   warehouse_id              varchar(255),
   name                      varchar(255),
   address_primary_key       bigint,
+  address_field             varchar(255),
   constraint pk_warehouse primary key (primary_key))
 ;
 

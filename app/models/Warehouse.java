@@ -31,10 +31,23 @@ public class Warehouse extends Model {
   @Required
   private String name;
   
-  @Required
+  
   @OneToOne(cascade = CascadeType.ALL)
   private Address address;
   
+  // TODO: How can we bind the address to this warehouse if it's to be managed by constructor?
+  // Is the constructor called when binding with a form?
+  @Required
+  private String addressField;
+  
+  public String getAddressField() {
+    return addressField;
+  }
+
+  public void setAddressField(String addressField) {
+    this.addressField = addressField;
+  }
+
   @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL)
   private List<StockItem> stockItems = new ArrayList<>();
 
