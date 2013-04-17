@@ -1,12 +1,15 @@
 package models;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import play.data.format.Formatters;
 import play.data.validation.Constraints.Required;
 import play.db.ebean.Model;
 
@@ -16,7 +19,7 @@ import play.db.ebean.Model;
  * @author Anthony Christe
  */
 @Entity
-public class Warehouse extends Model implements util.Bindable {
+public class Warehouse extends Model {
   private static final long serialVersionUID = 4112985926784791592L;
 
   @Id
@@ -35,10 +38,27 @@ public class Warehouse extends Model implements util.Bindable {
   @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL)
   private List<StockItem> stockItems = new ArrayList<>();
 
-  public Warehouse(String warehouseId, String name, Address address) {
+  public Warehouse(String warehouseId, String name, String address) {
     this.warehouseId = warehouseId;
     this.name = name;
-    this.address = address;
+    this.address = new Address("Address-01", address);
+    this.address.save();
+    
+    Formatters.register(models.Warehouse.class, new Formatters.SimpleFormatter<models.Warehouse>() {
+      @Override
+      public models.Warehouse parse(String text, Locale locale) throws ParseException {
+        models.Warehouse warehouse = models.Warehouse.find().where().eq("warehouseId", text).findUnique();
+        if (warehouse == null) {
+          throw new ParseException("Could not find matching Warehouse", 0);
+        }
+        return warehouse;
+      }
+
+      @Override
+      public String print(models.Warehouse t, Locale locale) {
+        return t.getWarehouseId();
+      }
+    });
   }
 
   public static Finder<Long, Warehouse> find() {

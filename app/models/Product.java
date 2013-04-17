@@ -1,12 +1,15 @@
 package models;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import play.data.format.Formatters;
 import play.data.validation.Constraints.Required;
 import play.db.ebean.Model;
 
@@ -40,6 +43,22 @@ public class Product extends Model {
     this.productId = productId;
     this.name = name;
     this.description = description;
+    
+    Formatters.register(models.Product.class, new Formatters.SimpleFormatter<models.Product>() {
+      @Override
+      public models.Product parse(String text, Locale locale) throws ParseException {
+        models.Product product = models.Product.find().where().eq("productId", text).findUnique();
+        if (product == null) {
+          throw new ParseException("Could not find matching Product", 0);
+        }
+        return product;
+      }
+
+      @Override
+      public String print(models.Product t, Locale locale) {
+        return t.getProductId();
+      }
+    });
   }
 
   public static Finder<Long, Product> find() {

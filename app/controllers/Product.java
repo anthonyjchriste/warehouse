@@ -1,13 +1,10 @@
 package controllers;
 
-import java.text.ParseException;
+import static play.data.Form.form;
 import java.util.List;
-import java.util.Locale;
 import play.data.Form;
-import play.data.format.Formatters;
 import play.mvc.Controller;
 import play.mvc.Result;
-import static play.data.Form.form;
 
 public class Product extends Controller {
   public static Result index() {
@@ -21,23 +18,6 @@ public class Product extends Controller {
   }
   
   public static Result newProduct() {
-    
-    Formatters.register(models.Product.class, new Formatters.SimpleFormatter<models.Product>() {
-      @Override
-      public models.Product parse(String text, Locale locale) throws ParseException {
-        models.Product product = models.Product.find().where().eq("productId", text).findUnique();
-        if (product == null) {
-          throw new ParseException("Could not find matching Product", 0);
-        }
-        return product;
-      }
-
-      @Override
-      public String print(models.Product t, Locale locale) {
-        return t.getProductId();
-      }
-    });
-    
     Form<models.Product> productForm = form(models.Product.class).bindFromRequest();
     
     if(productForm.hasErrors()) {

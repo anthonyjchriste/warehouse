@@ -40,16 +40,13 @@ public class ModelTest {
     tag.getProducts().add(product);
 
     // Create 1 address that's associated with 1 Warehouse
-    Address address = new Address("addressId", "Address");
-    Warehouse warehouse = new Warehouse("warehouseId", "Warehouse", address);
-    address.setWarehouse(warehouse);
+    Warehouse warehouse = new Warehouse("warehouseId", "Warehouse", "address");
     StockItem stockItem = new StockItem("stockItemId", warehouse, product, 100);
     warehouse.getStockItems().add(stockItem);
 
     warehouse.save();
     tag.save();
     product.save();
-    address.save();
     stockItem.save();
 
     List<Warehouse> warehouses = Warehouse.find().findList();

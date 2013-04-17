@@ -13,20 +13,15 @@ import static play.test.Helpers.inMemoryDatabase;
 import static play.test.Helpers.start;
 import static play.test.Helpers.status;
 import static play.test.Helpers.stop;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import models.Product;
-import models.Tag;
 import models.StockItem;
-import models.Address;
+import models.Tag;
 import models.Warehouse;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import play.mvc.HandlerRef;
 import play.mvc.Result;
 import play.test.FakeApplication;
 import play.test.FakeRequest;
@@ -134,7 +129,6 @@ public class ControllerTest {
     assertEquals("Deleted tag gone", NOT_FOUND, status(result));
     result = callAction(controllers.routes.ref.Tag.delete(tagId));
     assertEquals("Delete missing tag also OK", OK, status(result));
-    
   }
   
   @Test
@@ -144,7 +138,7 @@ public class ControllerTest {
     assertTrue("Empty", contentAsString(result).contains("No stockItems"));
     
     // Need some extra objects in order to create our StockItem.
-    Warehouse warehouse = new Warehouse("Warehouse-01", "name", new Address("Address-01", "address"));
+    Warehouse warehouse = new Warehouse("Warehouse-01", "name", "address");
     Product product = new Product("Product-01", "produce", "description");
     warehouse.save();
     product.save();
@@ -163,16 +157,15 @@ public class ControllerTest {
     // Test GET /stockitems/BadStockItemId and make sure we get a 404.
     result = callAction(controllers.routes.ref.StockItem.details("BadStockItemId"));
     assertEquals("StockItem detail (bad)", NOT_FOUND, status(result));
-    
+
     // Test POST /stockitems (with simulated, valid form data).
     Map<String, String> stockItemData = new HashMap<>();
     stockItemData.put("stockItemId", "StockItem-02");
     stockItemData.put("warehouse", "Warehouse-01");
     stockItemData.put("product", "Product-01");
-    //stockItemData.put("amount", "1");
+    stockItemData.put("amount", "1");
     FakeRequest request = fakeRequest();
     request.withFormUrlEncodedBody(stockItemData);
-    //System.out.println(request.);
     result = callAction(controllers.routes.ref.StockItem.newStockItem(), request);
     assertEquals("Create new tag", OK, status(result));
     
